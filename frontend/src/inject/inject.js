@@ -508,8 +508,27 @@ function addPopup() {
 
         console.log(event);
     }, true);
-    
 
+    /*
+    div2 = document.createElement("div");
+    div2.style.position = "fixed";
+    div2.style.left = "auto";
+    div2.style.right = "8px";
+    div2.style.top = "108px";
+    div2.style.width = "10px";
+    div2.style.height = "10px";
+    div2.style.background = "blue";
+    div2.style.color = " ";
+    div2.style.zIndex = 99999999;
+    div2.style.borderRadius = "10rem";
+    div2.style.cursor = 'grad';
+
+    document.body.appendChild(div2);
+
+    div2.addEventListener('mousedown', function(e) {
+        document.getElementById('iframe').contentWindow.startTimer();
+    }, true);
+    */
 }
 
 document.addEventListener("readystatechange", async function(event){
