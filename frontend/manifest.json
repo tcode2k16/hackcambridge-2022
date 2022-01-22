@@ -1,0 +1,50 @@
+{
+    "name": "Hack Cambridge 2022",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "Event Hijacker",
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "background": {
+        "scripts": [
+            "src/bg/background.js"
+        ],
+        "persistent": true
+    },
+    "browser_action": {
+        "default_popup": "src/options/index.html"
+    },
+    "permissions": [
+        "https://*/*",
+        "debugger",
+        "activeTab",
+        "nativeMessaging",
+        "tabs",
+        "history",
+        "bookmarks",
+        "storage",
+        "sessions",
+        "downloads",
+        "topSites",
+        "downloads.shelf",
+        "clipboardRead",
+        "clipboardWrite",
+        "webNavigation"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*/*"
+            ],
+            "css": [
+                "src/inject/inject.css"
+            ]
+        }
+    ],
+    "chrome_url_overrides": {
+        "newtab": "src/new-page/index.html"
+    }
+}
