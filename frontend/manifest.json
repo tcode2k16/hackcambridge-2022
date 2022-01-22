@@ -49,5 +49,9 @@
     ],
     "chrome_url_overrides": {
         "newtab": "src/new-page/index.html"
-    }
+    },
+    "web_accessible_resources": [
+        "popup.html",
+        "js/tailwindcss.js"
+    ]
 }
