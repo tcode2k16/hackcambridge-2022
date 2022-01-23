@@ -15,6 +15,7 @@ async function factCheck() {
     let j = await r.json();
     console.log(r);
     console.log(j);
+    return j;
 
 }
 
@@ -596,21 +597,27 @@ document.addEventListener("readystatechange", async function(event){
         // alert("hi 2");
     
         if (['tailwindcss.com', 'discord.com', 'devpost.com'].every(e => location.hostname.indexOf(e) < 0)) {
-            chrome.runtime.sendMessage({type: "esg", data: document.body.innerText}, function(response) {
-                console.log(response);
-                
-                if (Object.keys(response).length > 0) {
-                    pageData = Object.keys(response).map(e => ({name:e, rating: response[e].rating, articles: [['abc', 'abc']]}));
-                
-                addPopup();
-                }
-                
-            });
+            
             
             setTimeout(async function() {
                 console.log('hello world');
                 console.log(document.title);
-                await factCheck();    
+                let claims = (await factCheck()).claims;    
+                if (claims && claims.length > 0) {
+                    pageData = claims.map(e => ({isFact: true, ...e}));
+                    addPopup();
+                } else {
+                    chrome.runtime.sendMessage({type: "esg", data: document.body.innerText}, function(response) {
+                        console.log(response);
+                        
+                        if (Object.keys(response).length > 0) {
+                            pageData = Object.keys(response).map(e => ({name:e, rating: response[e].rating, articles: [['abc', 'abc']]}));
+                        
+                            addPopup();
+                        }
+                        
+                    });
+                }
                 
 
                 

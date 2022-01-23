@@ -74,6 +74,7 @@ function startWalking() {
     // foxOffset = 0;
     // foxDirection = -1;
     fox = document.getElementById('hack-fox');
+    if (animationInterval) { clearInterval(animationInterval); animationInterval = undefined; }
     animationInterval = setInterval(() => {
         fox.src = images[animationCounter].src;
         animationCounter = (animationCounter+1)%4;
@@ -91,7 +92,7 @@ function startWalking() {
 
 function stopWalking() {
     console.log('out');
-    if (animationInterval) clearInterval(animationInterval);
+    if (animationInterval) { clearInterval(animationInterval); animationInterval = undefined; }
     fox.src = sleepImg.src;
 }
 
@@ -105,41 +106,69 @@ window.addEventListener('DOMContentLoaded',  function() {
     let ratingEl = document.getElementById('Rating');
     let articleList = document.getElementById('ArticleList');
     let sidebar = document.getElementById('sidebar');
+    let CompanyUi = document.getElementById('CompanyUi');
+    let FactLink = document.getElementById('FactLink');
+    let FakeNews = document.getElementById('FakeNews');
+    let FakeAttr = document.getElementById('FakeAttr');
+    let Source = document.getElementById('Source');
+    let Reason = document.getElementById('Reason');
+    
+    let FactUi = document.getElementById('FactUi');
+    
     function switchTo(i) {
-        let {name, rating, articles} = data[i];
+        if (data[i].isFact) {
+            CompanyUi.style.display = 'none';
+            FactUi.style.display = 'block';
+            let o = data[i];
 
-        console.log(`switching to ${name}`);
-        companyName.innerText = name;
+            FakeNews.innerText = o.text;
+            FakeAttr.innerText = `By ${o.claimant}`;
+            Source.innerText = o.claimReview[0].publisher.name;
+            Reason.innerText = o.claimReview[0].textualRating;
 
 
-        Array.prototype.forEach.call(document.querySelectorAll(".hack-item"), function (e) { if (e.id.slice(4) === i+'') {e.classList.add('bg-slate-200')} else {e.classList.remove('bg-slate-200')} });
+            Array.prototype.forEach.call(document.querySelectorAll(".hack-articles"), function (e) { e.addEventListener('mouseover', function() {startWalking()}); e.addEventListener('mouseout', function() {stopWalking()}) });
 
-
-        articleList.innerHTML = '';
-        for (let each of articles) {
-            let [name, url] = each;
-            articleList.innerHTML += `
-            <li><a href="${url}" target="__blank" class="hack-articles text-sky-500">${name}</a></li>
-            `;
-        }
-
-        Array.prototype.forEach.call(document.querySelectorAll(".hack-articles"), function (e) { e.addEventListener('mouseover', function() {startWalking()}); e.addEventListener('mouseout', function() {stopWalking()}) });
-
-        for (let i = 1; i <= 5; i++) {
-            document.getElementById(`hack-rating-${i}`).classList.remove('border-2');
-        }
-        console.log(rating);
-        if (rating < 10) {
-            document.getElementById(`hack-rating-1`).classList.add('border-2');
-        } else if (rating < 20) {
-            document.getElementById(`hack-rating-2`).classList.add('border-2');
-        } else if (rating < 30) {
-            document.getElementById(`hack-rating-3`).classList.add('border-2');
-        } else if (rating < 40) {
-            document.getElementById(`hack-rating-4`).classList.add('border-2');
         } else {
-            document.getElementById(`hack-rating-5`).classList.add('border-2');
+            CompanyUi.style.display = 'block';
+            FactUi.style.display = 'none';
+
+            let {name, rating, articles} = data[i];
+
+            console.log(`switching to ${name}`);
+            companyName.innerText = name;
+
+
+            Array.prototype.forEach.call(document.querySelectorAll(".hack-item"), function (e) { if (e.id.slice(4) === i+'') {e.classList.add('bg-slate-200')} else {e.classList.remove('bg-slate-200')} });
+
+
+            articleList.innerHTML = '';
+            for (let each of articles) {
+                let [name, url] = each;
+                articleList.innerHTML += `
+                <li><a href="${url}" target="__blank" class="hack-articles text-sky-500">${name}</a></li>
+                `;
+            }
+
+            Array.prototype.forEach.call(document.querySelectorAll(".hack-articles"), function (e) { e.addEventListener('mouseover', function() {startWalking()}); e.addEventListener('mouseout', function() {stopWalking()}) });
+
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`hack-rating-${i}`).classList.remove('border-2');
+            }
+            console.log(rating);
+            if (rating < 10) {
+                document.getElementById(`hack-rating-1`).classList.add('border-2');
+            } else if (rating < 20) {
+                document.getElementById(`hack-rating-2`).classList.add('border-2');
+            } else if (rating < 30) {
+                document.getElementById(`hack-rating-3`).classList.add('border-2');
+            } else if (rating < 40) {
+                document.getElementById(`hack-rating-4`).classList.add('border-2');
+            } else {
+                document.getElementById(`hack-rating-5`).classList.add('border-2');
+            }
         }
+        
 
     }
 
@@ -154,31 +183,35 @@ window.addEventListener('DOMContentLoaded',  function() {
             console.log(res);
 
             // i = 0;
-            for (let i = 0; i < res.length; i++) {
-                let each = res[i];
-                console.log(each);
-                sidebar.innerHTML += `
-                <div id="item${i}" class="hack-item border-slate-300 hover:bg-slate-100	w-10 h-full flex flex-col justify-center border-y">
-                    <h1 class="transform -rotate-90 overflow-hidden w-18 -m-4 whitespace-nowrap">${each.name.split(' ')[0]}</h1>
-                </div>
-                `;
-                // clickList[sidebar.lastElementChild] = function() {
-                //     console.log('clicked');
-                //     switchTo(each);
-                // }
-                
-                // console.log(document.getElementById(`item${i}`));
-                // document.getElementById(`item${i}`).addEventListener('click', getCb(i));
-                // i+=1;
-                // console.log(sidebar.lastElementChild.firstElementChild.onclick);
-
+            
+            if (res.length > 1) {
+                for (let i = 0; i < res.length; i++) {
+                    let each = res[i];
+                    console.log(each);
+                    sidebar.innerHTML += `
+                    <div id="item${i}" class="hack-item border-slate-300 hover:bg-slate-100	w-10 h-full flex flex-col justify-center border-y">
+                        <h1 class="transform -rotate-90 overflow-hidden w-18 -m-4 whitespace-nowrap">${each.isFact ? each.text.split(' ')[0] : each.name.split(' ')[0]}</h1>
+                    </div>
+                    `;
+                    // clickList[sidebar.lastElementChild] = function() {
+                    //     console.log('clicked');
+                    //     switchTo(each);
+                    // }
+                    
+                    // console.log(document.getElementById(`item${i}`));
+                    // document.getElementById(`item${i}`).addEventListener('click', getCb(i));
+                    // i+=1;
+                    // console.log(sidebar.lastElementChild.firstElementChild.onclick);
+    
+                }
+                Array.prototype.forEach.call(document.querySelectorAll(".hack-item"), function (e) { console.log(e); e.addEventListener("click", click_handler) });
+                console.log(sidebar.firstChild);
+                sidebar.firstElementChild.classList.toggle('border-b');
+                sidebar.firstElementChild.classList.toggle('border-y');
+                sidebar.lastElementChild.classList.toggle('border-t');
+                sidebar.lastElementChild.classList.toggle('border-y');
             }
-            Array.prototype.forEach.call(document.querySelectorAll(".hack-item"), function (e) { console.log(e); e.addEventListener("click", click_handler) });
-            console.log(sidebar.firstChild);
-            sidebar.firstElementChild.classList.toggle('border-b');
-            sidebar.firstElementChild.classList.toggle('border-y');
-            sidebar.lastElementChild.classList.toggle('border-t');
-            sidebar.lastElementChild.classList.toggle('border-y');
+            
 
             switchTo(0);
         });
