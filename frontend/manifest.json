@@ -54,6 +54,7 @@
         "newtab": "src/new-page/index.html"
     },
     "web_accessible_resources": [
+        "icon.html",
         "popup.html",
         "js/tailwindcss.js",
         "src/pictures/*.png"

@@ -23,6 +23,7 @@ async function factCheck() {
 // iframe.src  = chrome.runtime.getURL ('popup.html');
 // document.body.appendChild (iframe);
 const popup_url = chrome.runtime.getURL("popup.html");
+const icon_url = chrome.runtime.getURL("icon.html");
 function old_addPopup(text, result) {
     const w = 600;
     const h = 650;
@@ -532,6 +533,7 @@ function addPopup() {
         iframe.style.width = "100px";
         iframe.style.height = "100px";
         iframe.style.borderRadius = "10rem";
+        iframe.src = icon_url;
         document.body.appendChild(open_div);
     });
 
@@ -541,6 +543,7 @@ function addPopup() {
       iframe.style.width = "300px";
       iframe.style.height = "400px";
       iframe.style.borderRadius = "0.75rem";
+      iframe.src = popup_url;
       document.body.appendChild(close_div);
       document.body.appendChild(move_div);
   });
@@ -581,26 +584,6 @@ function addPopup() {
         console.log(event);
     }, true);
 
-    /*
-    div2 = document.createElement("div");
-    div2.style.position = "fixed";
-    div2.style.left = "auto";
-    div2.style.right = "8px";
-    div2.style.top = "108px";
-    div2.style.width = "10px";
-    div2.style.height = "10px";
-    div2.style.background = "blue";
-    div2.style.color = " ";
-    div2.style.zIndex = 99999999;
-    div2.style.borderRadius = "10rem";
-    div2.style.cursor = 'grad';
-
-    document.body.appendChild(div2);
-
-    div2.addEventListener('mousedown', function(e) {
-        document.getElementById('iframe').contentWindow.startTimer();
-    }, true);
-    */
 }
 
 document.addEventListener("readystatechange", async function(event){
