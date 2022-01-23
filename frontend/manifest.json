@@ -47,6 +47,9 @@
             ]
         }
     ],
+    "externally_connectable": {
+        "matches": ["https://*/*"]
+    },
     "chrome_url_overrides": {
         "newtab": "src/new-page/index.html"
     },

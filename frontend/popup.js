@@ -1,3 +1,36 @@
+console.log('hello world');
+// chrome.runtime.sendMessage({ type: "abcde", data: 'abc' }, function (response) {
+
+// })
+document.addEventListener('mouseup', function () {
+    // chrome.runtime.sendMessage({ type: "abcde", data: 'abc' }, function (response) {
+
+    // })
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        console.log(tabs);
+        chrome.tabs.sendMessage(tabs[0].id, { type: "stopMove" }, function (response) {
+            console.log(response);
+        });
+    });
+}, true);
+
+
+document.addEventListener('mousemove', function(event) {
+    
+    let mousePosition = {
+
+        x : event.clientX,
+        y : event.clientY
+
+    };
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        // console.log(tabs);
+        chrome.tabs.sendMessage(tabs[0].id, { type: "mouseMove", data: mousePosition });
+    });
+}, true);
+
 
 var images = new Array();
 var x = 0;

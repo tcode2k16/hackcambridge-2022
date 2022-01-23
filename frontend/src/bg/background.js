@@ -33,6 +33,8 @@ function messageReceived(msg, sender, sendResponse) {
         // console.log('done');
     } else if (msg.type === 'esg.lookup') {
         // sendResponse(ratings[msg.data]);
+    } else {
+        console.log(msg);
     }
    
 }
