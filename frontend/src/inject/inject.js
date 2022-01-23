@@ -481,7 +481,7 @@ function addPopup() {
     move_div.style.top = (iframe_padding[1]+move_button_padding[1])+"px";
     move_div.style.width = "10px";
     move_div.style.height = "10px";
-    move_div.style.background = "green";
+    move_div.style.background = "rgb(16 185 129)";
     move_div.style.color = " ";
     move_div.style.zIndex = 99999999;
     move_div.style.borderRadius = "10rem";
@@ -496,7 +496,7 @@ function addPopup() {
     close_div.style.top = (iframe_padding[1]+close_button_padding[1])+"px";
     close_div.style.width = "10px";
     close_div.style.height = "10px";
-    close_div.style.background = "red";
+    close_div.style.background = "rgb(56 189 248)";
     close_div.style.color = " ";
     close_div.style.zIndex = 99999999;
     close_div.style.borderRadius = "10rem";
@@ -511,7 +511,7 @@ function addPopup() {
     open_div.style.top = (iframe_padding[1]+open_button_padding[1])+"px";
     open_div.style.width = "10px";
     open_div.style.height = "10px";
-    open_div.style.background = "red";
+    open_div.style.background = "rgb(56 189 248)";
     open_div.style.color = " ";
     open_div.style.zIndex = 99999999;
     open_div.style.borderRadius = "10rem";
@@ -531,6 +531,7 @@ function addPopup() {
     close_div.addEventListener('click', function() {
         console.log('clicked');
         close_div.remove();
+        move_div.remove();
         iframe.style.width = "100px";
         iframe_width = 100;
         iframe.style.height = "100px";
@@ -597,6 +598,13 @@ document.addEventListener("readystatechange", async function(event){
         if (['tailwindcss.com', 'discord.com', 'devpost.com'].every(e => location.hostname.indexOf(e) < 0)) {
             chrome.runtime.sendMessage({type: "esg", data: document.body.innerText}, function(response) {
                 console.log(response);
+                
+                if (Object.keys(response).length > 0) {
+                    pageData = Object.keys(response).map(e => ({name:e, rating: response[e].rating, articles: [['abc', 'abc']]}));
+                
+                addPopup();
+                }
+                
             });
             
             setTimeout(async function() {
@@ -609,7 +617,7 @@ document.addEventListener("readystatechange", async function(event){
                 console.log(document);
 
             }, 2000);
-            addPopup();
+            
         }
         
     }
@@ -618,6 +626,7 @@ document.addEventListener("readystatechange", async function(event){
 
 chrome.runtime.onMessage.addListener(messageReceived);
 
+let pageData = {};
 function messageReceived(msg, sender, sendResponse) {
     // console.log(msg);
     // console.log(isDown);
@@ -643,44 +652,8 @@ function messageReceived(msg, sender, sendResponse) {
         }
         sendResponse(true);
     } else if (msg.type === 'getData') {
-        sendResponse([
-            {
-                name: 'Apple Inc.',
-                rating: 15,
-                articles: [
-                    ['article 1', 'https://examples.com'],
-                    ['article 2', 'https://examples.com'],
-                    ['article 3', 'https://examples.com'],
-                ],
-            },
-            {
-                name: 'Microsoft Corp',
-                rating: 1,
-                articles: [
-                    ['article a', 'https://examples.com'],
-                    ['article b', 'https://examples.com'],
-                    ['article c', 'https://examples.com'],
-                ],
-            },
-            {
-                name: 'Microsoft Corp',
-                rating: 45,
-                articles: [
-                    ['article 1', 'https://examples.com'],
-                    
-                    ['article 3', 'https://examples.com'],
-                ],
-            },
-            {
-                name: 'Microsoft Corp',
-                rating: 30,
-                articles: [
-                    
-                    ['article 2', 'https://examples.com'],
-                    ['article 3', 'https://examples.com'],
-                ],
-            },
-        ])
+        console.log(pageData);
+        sendResponse(pageData);
     }
 }
 
