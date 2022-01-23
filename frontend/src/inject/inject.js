@@ -592,13 +592,24 @@ function addPopup() {
 
 }
 
+let esg_data;
 document.addEventListener("readystatechange", async function(event){
     if (event.target.readyState === "complete") {
         // alert("hi 2");
     
         if (['tailwindcss.com', 'discord.com', 'devpost.com'].every(e => location.hostname.indexOf(e) < 0)) {
             
-            
+            console.log(document.body.innerText);
+            chrome.runtime.sendMessage({type: "esg", data: document.body.innerText}, function(response) {
+                console.log('ESG: '+response);
+                console.log(response);
+                
+                if (Object.keys(response).length > 0) {
+                    esg_data = Object.keys(response).map(e => ({name:e, rating: response[e].rating, articles: [['abc', 'abc']]}));
+                
+                }
+                
+            });
             setTimeout(async function() {
                 console.log('hello world');
                 console.log(document.title);
@@ -606,17 +617,9 @@ document.addEventListener("readystatechange", async function(event){
                 if (claims && claims.length > 0) {
                     pageData = claims.map(e => ({isFact: true, ...e}));
                     addPopup();
-                } else {
-                    chrome.runtime.sendMessage({type: "esg", data: document.body.innerText}, function(response) {
-                        console.log(response);
-                        
-                        if (Object.keys(response).length > 0) {
-                            pageData = Object.keys(response).map(e => ({name:e, rating: response[e].rating, articles: [['abc', 'abc']]}));
-                        
-                            addPopup();
-                        }
-                        
-                    });
+                } else if (esg_data) {
+                    pageData = esg_data;
+                    addPopup();
                 }
                 
 

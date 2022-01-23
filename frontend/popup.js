@@ -1,3 +1,4 @@
+const MAX_ITEM_NUM = 4;
 console.log('hello world');
 // chrome.runtime.sendMessage({ type: "abcde", data: 'abc' }, function (response) {
 
@@ -178,15 +179,15 @@ window.addEventListener('DOMContentLoaded',  function() {
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { type: "getData" }, function(res) {
-            data = res;
+            data = res.slice(0,MAX_ITEM_NUM);
             // sidebar
             console.log(res);
 
             // i = 0;
             
-            if (res.length > 1) {
-                for (let i = 0; i < res.length; i++) {
-                    let each = res[i];
+            if (data.length > 1) {
+                for (let i = 0; i < data.length; i++) {
+                    let each = data[i];
                     console.log(each);
                     sidebar.innerHTML += `
                     <div id="item${i}" class="hack-item border-slate-300 hover:bg-slate-100	w-10 h-full flex flex-col justify-center border-y">
