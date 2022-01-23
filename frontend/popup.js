@@ -40,12 +40,17 @@ document.addEventListener('mousemove', function(event) {
 var images = new Array();
 var x = 0;
 var repeat;
-images[0] = new Image();
-images[0].src = 'src/pictures/image1.png';
-images[1] = new Image();
-images[1].src = 'src/pictures/image2.png';
-images[2] = new Image();
-images[2].src = 'src/pictures/image3.png';
+images.push(new Image());
+images[0].src = 'src/pictures/walking1.png';
+images.push(new Image());
+images[1].src = 'src/pictures/walking2.png';
+images.push(new Image());
+images[2].src = 'src/pictures/walking3.png';
+images.push(new Image());
+images[3].src = 'src/pictures/walking4.png';
+
+let sleepImg = new Image();
+sleepImg.src = 'src/pictures/fox2.png';
 
 function displayImage() {
     if(x == 0) {
@@ -62,8 +67,32 @@ function displayImage() {
     
 }
 
-function startTimer() {
-    repeat = setInterval(displayImage, 500);
+let fox, animationInterval, animationCounter = 0, foxOffset = 0, foxDirection = -1;
+function startWalking() {
+    console.log('hover');
+    // animationCounter = 0;
+    // foxOffset = 0;
+    // foxDirection = -1;
+    fox = document.getElementById('hack-fox');
+    animationInterval = setInterval(() => {
+        fox.src = images[animationCounter].src;
+        animationCounter = (animationCounter+1)%4;
+        console.log(`translate(${foxOffset}px,0px);`);
+        fox.style.transform = `translate(${foxOffset}px,0px)`+(foxDirection<0 ? '' : ' scaleX(-1)');
+        foxOffset+=5*foxDirection;
+        if (foxOffset < -150) {
+            foxDirection = 1;
+        } else if (foxOffset > -10) {
+            foxDirection = -1;
+        }
+    }, 200);
+    
+}
+
+function stopWalking() {
+    console.log('out');
+    if (animationInterval) clearInterval(animationInterval);
+    fox.src = sleepImg.src;
 }
 
 
@@ -90,9 +119,11 @@ window.addEventListener('DOMContentLoaded',  function() {
         for (let each of articles) {
             let [name, url] = each;
             articleList.innerHTML += `
-            <li><a href="${url}" target="__blank" class="text-sky-500">${name}</a></li>
+            <li><a href="${url}" target="__blank" class="hack-articles text-sky-500">${name}</a></li>
             `;
         }
+
+        Array.prototype.forEach.call(document.querySelectorAll(".hack-articles"), function (e) { e.addEventListener('mouseover', function() {startWalking()}); e.addEventListener('mouseout', function() {stopWalking()}) });
 
         for (let i = 1; i <= 5; i++) {
             document.getElementById(`hack-rating-${i}`).classList.remove('border-2');
@@ -153,3 +184,4 @@ window.addEventListener('DOMContentLoaded',  function() {
         });
     });
 });
+
