@@ -423,6 +423,7 @@ let height = window.innerHeight ? window.innerHeight : document.documentElement.
 const iframe_padding = [10, Math.floor((height-400)/2)];
 const move_button_padding = [25, 10];
 const close_button_padding = [10, 10];
+const open_button_padding = [10, 10];
 function updatePopupPos(mousePosition) {
     console.log(mousePosition);
     const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
@@ -432,6 +433,8 @@ function updatePopupPos(mousePosition) {
     move_div.style.top  = (mousePosition.y) + 'px';
     close_div.style.right = (width-(mousePosition.x)-move_button_padding[0]+close_button_padding[0]) + 'px';
     close_div.style.top  = (mousePosition.y)-move_button_padding[1]+close_button_padding[1] + 'px';
+    open_div.style.right = (width-(mousePosition.x)-move_button_padding[0]+open_button_padding[0]) + 'px';
+    open_div.style.top  = (mousePosition.y)-move_button_padding[1]+open_button_padding[1] + 'px';
     iframe.style.right = (width-(mousePosition.x)-move_button_padding[0]) + 'px';
     iframe.style.top  = (mousePosition.y)-move_button_padding[1] + 'px';
 }
@@ -465,10 +468,9 @@ function addPopup() {
     `;
     document.body.appendChild(iframe);
 
+
     var mousePosition;
     var offset = [0,0];
-    
-
     
     move_div = document.createElement("div");
     move_div.style.position = "fixed";
@@ -485,8 +487,6 @@ function addPopup() {
     
     document.body.appendChild(move_div);
 
-
-
     close_div = document.createElement("div");
     close_div.style.position = "fixed";
     close_div.style.left = "auto";
@@ -502,6 +502,19 @@ function addPopup() {
     
     document.body.appendChild(close_div);
 
+    open_div = document.createElement("div");
+    open_div.style.position = "fixed";
+    open_div.style.left = "auto";
+    open_div.style.right = (iframe_padding[0]+open_button_padding[0])+"px";
+    open_div.style.top = (iframe_padding[1]+open_button_padding[1])+"px";
+    open_div.style.width = "10px";
+    open_div.style.height = "10px";
+    open_div.style.background = "red";
+    open_div.style.color = " ";
+    open_div.style.zIndex = 99999999;
+    open_div.style.borderRadius = "10rem";
+    open_div.style.cursor = 'grad';
+
     // document.body.appendChild(container);
 
     move_div.addEventListener('mousedown', function(e) {
@@ -515,11 +528,22 @@ function addPopup() {
 
     close_div.addEventListener('click', function() {
         console.log('clicked');
-        move_div.remove();
-
         close_div.remove();
-        iframe.remove();
+        iframe.style.width = "100px";
+        iframe.style.height = "100px";
+        iframe.style.borderRadius = "10rem";
+        document.body.appendChild(open_div);
     });
+
+    open_div.addEventListener('click', function() {
+      console.log('clicked');
+      open_div.remove();
+      iframe.style.width = "300px";
+      iframe.style.height = "400px";
+      iframe.style.borderRadius = "0.75rem";
+      document.body.appendChild(close_div);
+      document.body.appendChild(move_div);
+  });
 
     document.addEventListener('mouseup', function() {
         console.log('up');
@@ -551,6 +575,7 @@ function addPopup() {
             
         move_div.style.right = Math.min(parseInt(move_div.style.right.slice(0, -2)), width-300+move_button_padding[0])+'px';
         close_div.style.right = Math.min(parseInt(close_div.style.right.slice(0, -2)), width-300+close_button_padding[0])+'px';
+        open_div.style.right = Math.min(parseInt(open_div.style.right.slice(0, -2)), width-300+open_button_padding[0])+'px';
         iframe.style.right = Math.min(parseInt(iframe.style.right.slice(0, -2)), width-300)+'px';
 
         console.log(event);
