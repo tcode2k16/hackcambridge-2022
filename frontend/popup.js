@@ -69,15 +69,29 @@ function displayImage() {
 }
 
 let fox, animationInterval, animationCounter = 0, foxOffset = 0, foxDirection = -1;
-function startWalking() {
+async function startWalking() {
     console.log('hover');
     // animationCounter = 0;
     // foxOffset = 0;
     // foxDirection = -1;
+
+    
     fox = document.getElementById('hack-fox');
+
+    fox.style.transition = 'opacity 0.3s';
+    fox.style.opacity = 0;
+    await sleep(300);
+    
     if (animationInterval) { clearInterval(animationInterval); animationInterval = undefined; }
-    animationInterval = setInterval(() => {
+    animationInterval = setInterval(async () => {
         fox.src = images[animationCounter].src;
+        // first call
+        if (fox.style.transition) {
+            await sleep(300);
+            fox.style.opacity = 1;
+            fox.style.transition = '';
+        }
+
         animationCounter = (animationCounter+1)%4;
         console.log(`translate(${foxOffset}px,0px);`);
         fox.style.transform = `translate(${foxOffset}px,0px)`+(foxDirection<0 ? '' : ' scaleX(-1)');
@@ -91,10 +105,25 @@ function startWalking() {
     
 }
 
-function stopWalking() {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function stopWalking() {
     console.log('out');
+
     if (animationInterval) { clearInterval(animationInterval); animationInterval = undefined; }
+
+    fox.style.transition = 'opacity 0.3s';
+    fox.style.opacity = 0;
+    await sleep(300);
     fox.src = sleepImg.src;
+    await sleep(300);
+    fox.style.opacity = 1;
+    await sleep(300);
+    fox.style.transition = '';
+
 }
 
 

@@ -441,6 +441,10 @@ function updatePopupPos(mousePosition) {
     iframe.style.top  = (mousePosition.y)-move_button_padding[1] + 'px';
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function addPopup() {
     
     // let container = document.createElement('div');
@@ -463,7 +467,7 @@ function addPopup() {
         z-index: 99999999;
         border-radius: 0.75rem;
         filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
-        
+        transition: opacity 0.3s;
     }
     
     </style>
@@ -529,28 +533,39 @@ function addPopup() {
     }, true);
 
 
-    close_div.addEventListener('click', function() {
+    close_div.addEventListener('click', async function() {
         console.log('clicked');
         close_div.remove();
         move_div.remove();
+        iframe.style.opacity = 0;
+        await sleep(300);
         iframe.style.width = "100px";
         iframe_width = 100;
         iframe.style.height = "100px";
         iframe.style.borderRadius = "10rem";
         iframe.src = icon_url;
+        await sleep(300);
+        iframe.style.opacity = 1;    
+        // iframe.style.opacity = "100%";
         document.body.appendChild(open_div);
     });
 
-    open_div.addEventListener('click', function() {
-      console.log('clicked');
-      open_div.remove();
-      iframe.style.width = "300px";
-      iframe_width = 300;
-      iframe.style.height = "400px";
-      iframe.style.borderRadius = "0.75rem";
-      iframe.src = popup_url;
-      document.body.appendChild(close_div);
-      document.body.appendChild(move_div);
+    open_div.addEventListener('click', async function() {
+        console.log('clicked');
+        open_div.remove();
+        iframe.style.opacity = 0;
+        await sleep(300);
+        iframe.style.width = "300px";
+        iframe_width = 300;
+        iframe.style.height = "400px";
+        iframe.style.borderRadius = "0.75rem";
+        iframe.src = popup_url;
+        await sleep(300);
+        iframe.style.opacity = 1;    
+
+        //   iframe.style.opacity = "100%";
+        document.body.appendChild(close_div);
+        document.body.appendChild(move_div);
   });
 
     document.addEventListener('mouseup', function() {
