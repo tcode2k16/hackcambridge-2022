@@ -445,14 +445,16 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function addPopup() {
+async function addPopup() {
     
     // let container = document.createElement('div');
     // container.className = 'hack-popup-container';
 
     iframe  = document.createElement('iframe');
     iframe.src  = popup_url;
+    iframe.style.opacity  = 0;
     iframe.className = 'hack-popup';
+    
 
     document.body.innerHTML += `<style>
     .hack-popup { 
@@ -490,7 +492,8 @@ function addPopup() {
     move_div.style.color = " ";
     move_div.style.zIndex = 99999999;
     move_div.style.borderRadius = "10rem";
-    move_div.style.cursor = 'grad';
+    move_div.style.cursor = 'move';
+    
     
     document.body.appendChild(move_div);
 
@@ -505,7 +508,7 @@ function addPopup() {
     close_div.style.color = " ";
     close_div.style.zIndex = 99999999;
     close_div.style.borderRadius = "10rem";
-    close_div.style.cursor = 'grad';
+    close_div.style.cursor = 'pointer';
     
     document.body.appendChild(close_div);
 
@@ -520,7 +523,7 @@ function addPopup() {
     open_div.style.color = " ";
     open_div.style.zIndex = 99999999;
     open_div.style.borderRadius = "10rem";
-    open_div.style.cursor = 'grad';
+    open_div.style.cursor = 'pointer';
 
     // document.body.appendChild(container);
 
@@ -605,6 +608,9 @@ function addPopup() {
         console.log(event);
     }, true);
 
+    await sleep(600);
+    iframe.style.opacity  = 1;
+
 }
 
 let esg_data;
@@ -620,7 +626,14 @@ document.addEventListener("readystatechange", async function(event){
                 console.log(response);
                 
                 if (Object.keys(response).length > 0) {
-                    esg_data = Object.keys(response).map(e => ({name:e, rating: response[e].rating, articles: [['abc', 'abc']]}));
+                    esg_data = Object.keys(response).map(e => ({name:e, rating: response[e].rating, articles: 
+                    [
+                        ['12 Major Companies Responsible for Deforestation', 'https://earth.org/major-companies-responsible-for-deforestation/'],
+                        ['New study links major fashion brands to Amazon deforestation', 'https://www.theguardian.com/us-news/2021/nov/29/fashion-industry-amazon-rainforest-deforestation'],
+                        ['The Companies Behind the Burning of the Amazon', 'https://stories.mightyearth.org/amazonfires/index.html'],
+                    ].sort(() => Math.random() - Math.random()).slice(0, 2), 
+                        
+                    }));
                 
                 }
                 

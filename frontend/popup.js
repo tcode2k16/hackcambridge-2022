@@ -123,6 +123,8 @@ async function stopWalking() {
     fox.style.opacity = 1;
     await sleep(300);
     fox.style.transition = '';
+    await sleep(300);
+    if (animationInterval) { clearInterval(animationInterval); animationInterval = undefined; }
 
 }
 
@@ -134,6 +136,7 @@ window.addEventListener('DOMContentLoaded',  function() {
     document.getElementsByClassName('play')[0].onclick = function() {startTimer();}
     let companyName = document.getElementById('CompanyName');
     let ratingEl = document.getElementById('Rating');
+    let RatingText = document.getElementById('RatingText');
     let articleList = document.getElementById('ArticleList');
     let sidebar = document.getElementById('sidebar');
     let CompanyUi = document.getElementById('CompanyUi');
@@ -182,6 +185,7 @@ window.addEventListener('DOMContentLoaded',  function() {
 
             Array.prototype.forEach.call(document.querySelectorAll(".hack-articles"), function (e) { e.addEventListener('mouseover', function() {startWalking()}); e.addEventListener('mouseout', function() {stopWalking()}) });
 
+            RatingText.innerText = RatingText.innerText.split(':')[0] + ': ' + rating;
             for (let i = 1; i <= 5; i++) {
                 document.getElementById(`hack-rating-${i}`).classList.remove('border-2');
             }
