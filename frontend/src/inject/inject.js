@@ -418,7 +418,7 @@ function old_addPopup(text, result) {
   }
 
 var isDown = false;
-var move_div, close_div, iframe;
+var move_div, close_div, iframe, iframe_width;
 
 let height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
 const iframe_padding = [10, Math.floor((height-400)/2)];
@@ -467,6 +467,7 @@ function addPopup() {
     
     </style>
     `;
+    iframe_width = 300;
     document.body.appendChild(iframe);
 
 
@@ -531,6 +532,7 @@ function addPopup() {
         console.log('clicked');
         close_div.remove();
         iframe.style.width = "100px";
+        iframe_width = 100;
         iframe.style.height = "100px";
         iframe.style.borderRadius = "10rem";
         iframe.src = icon_url;
@@ -541,6 +543,7 @@ function addPopup() {
       console.log('clicked');
       open_div.remove();
       iframe.style.width = "300px";
+      iframe_width = 300;
       iframe.style.height = "400px";
       iframe.style.borderRadius = "0.75rem";
       iframe.src = popup_url;
@@ -576,10 +579,11 @@ function addPopup() {
         const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
         const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
             
-        move_div.style.right = Math.min(parseInt(move_div.style.right.slice(0, -2)), width-300+move_button_padding[0])+'px';
-        close_div.style.right = Math.min(parseInt(close_div.style.right.slice(0, -2)), width-300+close_button_padding[0])+'px';
-        open_div.style.right = Math.min(parseInt(open_div.style.right.slice(0, -2)), width-300+open_button_padding[0])+'px';
-        iframe.style.right = Math.min(parseInt(iframe.style.right.slice(0, -2)), width-300)+'px';
+        console.log(iframe_width);
+        move_div.style.right = Math.min(parseInt(move_div.style.right.slice(0, -2)), width-iframe_width+move_button_padding[0])+'px';
+        close_div.style.right = Math.min(parseInt(close_div.style.right.slice(0, -2)), width-iframe_width+close_button_padding[0])+'px';
+        open_div.style.right = Math.min(parseInt(open_div.style.right.slice(0, -2)), width-iframe_width+open_button_padding[0])+'px';
+        iframe.style.right = Math.min(parseInt(iframe.style.right.slice(0, -2)), width-iframe_width)+'px';
 
         console.log(event);
     }, true);
@@ -615,8 +619,8 @@ document.addEventListener("readystatechange", async function(event){
 chrome.runtime.onMessage.addListener(messageReceived);
 
 function messageReceived(msg, sender, sendResponse) {
-    console.log(msg);
-    console.log(isDown);
+    // console.log(msg);
+    // console.log(isDown);
     // console.log(sender);
     if (msg.type === 'stopMove') {
         if (isDown) {
@@ -633,11 +637,50 @@ function messageReceived(msg, sender, sendResponse) {
             
 
             updatePopupPos({
-                x:width-parseInt(iframe.style.right.slice(0, -2))-300+x,
+                x:width-parseInt(iframe.style.right.slice(0, -2))-iframe_width+x,
                 y:parseInt(iframe.style.top.slice(0, -2))+y,
             });
         }
         sendResponse(true);
+    } else if (msg.type === 'getData') {
+        sendResponse([
+            {
+                name: 'Apple Inc.',
+                rating: 15,
+                articles: [
+                    ['article 1', 'https://examples.com'],
+                    ['article 2', 'https://examples.com'],
+                    ['article 3', 'https://examples.com'],
+                ],
+            },
+            {
+                name: 'Microsoft Corp',
+                rating: 1,
+                articles: [
+                    ['article a', 'https://examples.com'],
+                    ['article b', 'https://examples.com'],
+                    ['article c', 'https://examples.com'],
+                ],
+            },
+            {
+                name: 'Microsoft Corp',
+                rating: 45,
+                articles: [
+                    ['article 1', 'https://examples.com'],
+                    
+                    ['article 3', 'https://examples.com'],
+                ],
+            },
+            {
+                name: 'Microsoft Corp',
+                rating: 30,
+                articles: [
+                    
+                    ['article 2', 'https://examples.com'],
+                    ['article 3', 'https://examples.com'],
+                ],
+            },
+        ])
     }
 }
 

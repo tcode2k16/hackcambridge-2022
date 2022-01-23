@@ -17,9 +17,9 @@
 
 <body class="overflow-hidden">
 
-    <div class="bg-white h-full w-full pt-7 min-h-screen flex flex-row">
-        <div class="flex flex-col  justify-evenly align-center text-center">
-            <div class="border-slate-300 hover:bg-slate-100 bg-slate-200 w-10 h-full flex flex-col justify-center border-b">
+    <div class="bg-white h-full w-full pt-7 min-h-screen flex flex-row items-stretch">
+        <div class="flex flex-col  justify-evenly align-center text-center" id="sidebar">
+            <!-- <div class="border-slate-300 hover:bg-slate-100 bg-slate-200 w-10 h-full flex flex-col justify-center border-b">
                 
                 <h1 class="transform -rotate-90 overflow-hidden w-18 -m-4 whitespace-nowrap">Apple</h1>
             </div>
@@ -34,52 +34,59 @@
             <div class="border-slate-300 hover:bg-slate-100	w-10 h-full flex flex-col justify-center border-t">
                 
                 <h1 class="transform -rotate-90 overflow-hidden w-18 -m-4 whitespace-nowrap">d</h1>
-            </div>
+            </div> -->
             <!-- <h1>a</h1>
             <h1>b</h1>
             <h1>c</h1> -->
         </div>
-        <div class="p-3 flex flex-col justify-start w-full">
-            <div class="flex justify-between align-center">
-                <h1 class="text-3xl">Apple Inc.</h1>
-                <!-- <h1 class="text-3xl text-orange-200 mr-3">15</h1> -->
-            </div>
-            <br><br>
-
-            <h1 class="text-md">ESG Risk Rating</h1>
-            <div class="flex flex-row">
-                <div class="p-1 w-12 text-center w-full bg-slate-200">
-                    <h1 class="text-md">0-10</h1>
+        <div class="p-3 w-full h-full flex flex-col justify-between">
+            <div class="flex flex-col justify-start w-full h-full">
+                <div class="flex justify-between align-center">
+                    <h1 class="text-3xl" id="CompanyName">Apple Inc.</h1>
+                    <!-- <h1 class="text-3xl text-orange-200 mr-3">15</h1> -->
                 </div>
-                <div class="p-1 w-12 border-2 border-slate-800 text-center w-full bg-orange-100">
-                    <h1 class="text-md">10-20</h1>
+                <br><br>
+    
+                <h1 class="text-md">ESG Risk Rating</h1>
+                <div class="flex flex-row" id="Rating">
+                    <div id="hack-rating-1" class="p-1 w-12 border-slate-800 text-center w-full bg-slate-200">
+                        <h1 class="text-md">0-10</h1>
+                    </div>
+                    <div id="hack-rating-2" class="p-1 w-12 border-slate-800 text-center w-full bg-orange-100">
+                        <h1 class="text-md">10-20</h1>
+                    </div>
+                    <div id="hack-rating-3" class="p-1 w-12 border-slate-800 text-center w-full bg-orange-200	">
+                        <h1 class="text-md">20-30</h1>
+                    </div>
+                    <div id="hack-rating-4" class="p-1 w-12 border-slate-800 text-center w-full bg-orange-400	">
+                        <h1 class="text-md">30-40</h1>
+                    </div>
+                    <div id="hack-rating-5" class="p-1 w-12 border-slate-800 text-center w-full bg-orange-600	">
+                        <h1 class="text-md">40+</h1>
+                    </div>
                 </div>
-                <div class="p-1 w-12 text-center w-full bg-orange-200	">
-                    <h1 class="text-md">20-30</h1>
-                </div>
-                <div class="p-1 w-12 text-center w-full bg-orange-400	">
-                    <h1 class="text-md">30-40</h1>
-                </div>
-                <div class="p-1 w-12 text-center w-full bg-orange-600	">
-                    <h1 class="text-md">40+</h1>
-                </div>
-            </div>
-            <br>
-            <h1 class="text-md">Related Articles</h1>
-            
+                <br>
+                <h1 class="text-md">Related Articles</h1>
                 
-            <ul class="list-disc ml-6">
-                <li><a href="https://example.com" target="__blank" class="text-sky-500">Article 1</a></li>
-                <li><a href="https://example.com" target="__blank" class="text-sky-500">Article 2</a></li>
-                <li><a href="https://example.com" target="__blank" class="text-sky-500">Article 3</a></li>
-            </ul>
-
-            <img id="img"  class="w-20">
-            <button type="button" class="play">Run</button>
+                    
+                <ul class="list-disc ml-6" id="ArticleList">
+                    <li><a href="https://example.com" target="__blank" class="text-sky-500">Article 1</a></li>
+                    <li><a href="https://example.com" target="__blank" class="text-sky-500">Article 2</a></li>
+                    <li><a href="https://example.com" target="__blank" class="text-sky-500">Article 3</a></li>
+                </ul>
+    
+                <img id="img"  class="w-20">
+                <button type="button" class="play"></button>
+            </div>
+            
+            
+            
 
         </div>
         
+        
     </div>
+    <div class="absolute bottom-0 left-0 w-full flex flex-row justify-end"><img src="src/pictures/fox2.png" class="h-16 object-cover" alt=""></div>
 </body>
 
 
