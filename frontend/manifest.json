@@ -50,9 +50,6 @@
     "externally_connectable": {
         "matches": ["https://*/*"]
     },
-    "chrome_url_overrides": {
-        "newtab": "src/new-page/index.html"
-    },
     "web_accessible_resources": [
         "icon.html",
         "popup.html",
